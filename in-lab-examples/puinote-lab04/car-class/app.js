@@ -1,5 +1,9 @@
 /* A class representing a car that can start and stop moving. */
 class Car {
+  model;
+  car;
+  isMoving = false;
+  element;
   /* Declare four properties:
    * model - the model name of the car
    * year - the year of the car
@@ -8,6 +12,9 @@ class Car {
    */
 
   constructor(model, year, element) {
+    this.model = model;
+    this.year = year;
+    this.element = element;
     /* Initialize the car's properties here */
   }
 
@@ -18,10 +25,13 @@ class Car {
    * class to the car element when it is moving.
    */
   updateElement() {
+    this.element.innerText = this.model;
     // implement this
   }
 
   drive() {
+    this.isMoving = true;
+    this.element.innerText = 'is driving';
     // implement this
   }
 
@@ -35,5 +45,6 @@ class Car {
  model "Chevy Corvette", the year "2022", and the car element. Then call
  updateElement().
 */
-let carElement = null; // implement
-let theCar = null; // implement
+let carElement = document.querySelector(".car"); // implement
+let theCar = new Car("Chery Corvette", "2020", carElement); // implement
+theCar.updateElement();
