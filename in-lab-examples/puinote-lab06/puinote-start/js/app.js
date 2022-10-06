@@ -76,6 +76,8 @@ function deleteNote(notecard) {
 
   // remove the actual Notecard object from our set of notecards
   notecardSet.delete(notecard);
+
+  saveToLocalStorage();
 }
 
 
@@ -83,5 +85,50 @@ function deleteNote(notecard) {
 
 function submitNote() {
   // Nothing here yet!
-  console.log("Submitted Note!")
+  let titleElement = document.querySelector('#note-editor-title');
+  let title = titleElement.value;
+
+  let bodyElement = document.querySelector('#note-editor-body');
+  let body = bodyElement.value;
+
+  let imageElement = document.querySelector('#note-editor-image');
+  let imageURL = imageElement.src;
+
+  // create Notecard object and add to notecardSet
+  let notecard = addNewNote(imageURL, title, body);
+  // add the notecard to the DOM
+  createElement(notecard);
+  console.log("Submitted Note!");
+  saveToLocalStorage();
+
 }
+
+function saveToLocalStorage() {
+  let notecardArray = Array.from(notecardSet);
+  console.log(notecardArray);
+
+  let notecardJSON = JSON.stringify(notecardArray);
+  console.log(notecardJSON);
+
+  localStorage.setItem('storeNotes', notecardJSON);
+}
+
+function retrieveFromLocalStorage () {
+  let notecardJSON = localStorage.getItem('storeNotes');
+
+  if (notecardJSON == null) {
+    return;
+  }
+
+  let notecardArray = JSON.parse(notecardJSON);
+
+  for (let noteData of notecardArray) {
+    // concert vanilla JS objects into Notecard instances, and add them to notecardSet
+    let notecard = addNewNote(noteData.noteimageURL, noteData.noteTitle, noteData.noteBody);
+
+    // add to DOM
+    createElement(notecard);
+  }
+}
+
+retrieveFromLocalStorage();
